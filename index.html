@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NLO Apps — App Store</title>
+<link rel="icon" type="image/png" href="icon.png">
+<style>
+  :root{--bg:#0B0B0F;--card:#17171F;--line:#2A2A35;--text:#F2F2F5;--muted:#9A9AA5;--accent:#FF7A1A;--accent2:#FFA25E}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--text);font-family:"Segoe UI",system-ui,-apple-system,sans-serif;min-height:100dvh}
+  .wrap{max-width:560px;margin:0 auto;padding:28px 18px 40px}
+  header{text-align:center;padding:18px 0 26px}
+  header .logo{font-size:15px;letter-spacing:4px;color:var(--accent);font-weight:700}
+  header h1{font-size:30px;margin-top:6px}
+  header p{color:var(--muted);margin-top:6px;font-size:14px}
+  .app{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px;margin-bottom:16px}
+  .app-top{display:flex;gap:16px;align-items:center}
+  .app-top img{width:76px;height:76px;border-radius:18px}
+  .app-top .name{font-size:20px;font-weight:700;line-height:1.35}
+  .app-top .meta{color:var(--muted);font-size:13px;margin-top:4px}
+  .desc{color:#D8D8DE;font-size:14.5px;line-height:1.75;margin:16px 0 4px}
+  .feats{list-style:none;margin:10px 0 18px}
+  .feats li{color:var(--muted);font-size:14px;line-height:1.9;padding-left:20px;position:relative}
+  .feats li::before{content:"•";color:var(--accent);position:absolute;left:4px;font-weight:700}
+  .dl{display:block;text-align:center;background:var(--accent);color:#14100C;font-weight:800;font-size:17px;
+      padding:14px;border-radius:14px;text-decoration:none}
+  .dl:active{background:var(--accent2)}
+  .dl small{display:block;font-weight:600;font-size:12px;opacity:.75;margin-top:2px}
+  .note{color:var(--muted);font-size:12.5px;line-height:1.8;margin-top:14px;text-align:center}
+  footer{text-align:center;color:var(--muted);font-size:12.5px;padding-top:14px}
+  footer b{color:var(--accent);letter-spacing:2px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="logo">NLO</div>
+    <h1>NLO Apps</h1>
+    <p>NLO ၏ app များကို ဒီနေရာမှာ download လုပ်နိုင်ပါတယ်</p>
+  </header>
+
+  <div class="app">
+    <div class="app-top">
+      <img src="icon.png" alt="အလုပ်နေ့ မှတ်တမ်း icon">
+      <div>
+        <div class="name">အလုပ်နေ့ မှတ်တမ်း</div>
+        <div class="meta">Version 1.0 · 38 KB · Android 8.0 နှင့်အထက်</div>
+      </div>
+    </div>
+    <p class="desc">အလုပ်ဆင်းရက်တွေကို မှတ်ထားဖို့ app — Sunday ပိတ်ရက် အလိုအလျောက် နှုတ်ပြီး၊ ကိုယ် မသွားတဲ့ရက်နဲ့ တနပ် (တစ်ဝက်ရက်) တွေကို မှတ်လို့ရတယ်။ ၁၅ ရက် တစ်ကြိမ် လစာ တွက်ပေးတယ်။</p>
+    <ul class="feats">
+      <li>နေ့စားခ နှုန်းထား ကိုယ်တိုင် ပြင်လို့ရ (default ၇၀၀ ဘတ်)</li>
+      <li>ည ၈ နာရီတိုင်း မှတ်ဖို့ သတိပေးချက် + လစာနေ့ အကျဉ်းချုပ် noti</li>
+      <li>Home screen widget — လက်ရှိ ကာလ လုပ်ရက်နဲ့ လုပ်အားခ ချက်ချင်း ကြည့်လို့ရ</li>
+      <li>Dark / White theme နှစ်မျိုး၊ data က ဖုန်းထဲမှာပဲ သိမ်း — account မလို</li>
+    </ul>
+    <a class="dl" href="https://github.com/old-burma/nlo-app/releases/download/v1.0/WorkDayTracker.apk">⬇️ APK Download<small>WorkDayTracker.apk · 38 KB</small></a>
+    <p class="note">Download လုပ်ပြီး file ကို နှိပ် install လုပ်ပါ။<br>“Unknown apps install” ခွင့်ပြုချက် တောင်းလာရင် Allow / ခွင့်ပြုပါ နှိပ်ပေးပါ။</p>
+  </div>
+
+  <footer>© 2026 · by <b>NLO</b></footer>
+</div>
+</body>
+</html>

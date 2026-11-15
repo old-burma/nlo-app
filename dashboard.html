@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NLO Apps — Admin Dashboard</title>
+<link rel="icon" type="image/png" href="icon.png">
+<style>
+  :root{--bg:#0B0B0F;--card:#17171F;--line:#2A2A35;--text:#F2F2F5;--muted:#9A9AA5;--accent:#FF7A1A;--red:#FF5A5A}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--text);font-family:"Segoe UI",system-ui,-apple-system,sans-serif;min-height:100dvh}
+  .wrap{max-width:640px;margin:0 auto;padding:24px 16px 40px}
+  header{display:flex;align-items:baseline;gap:10px;padding:8px 0 20px}
+  header .logo{letter-spacing:3px;color:var(--accent);font-weight:700;font-size:14px}
+  header h1{font-size:21px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:14px}
+  .grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;text-align:center}
+  .stat .num{font-size:30px;font-weight:800;color:var(--accent)}
+  .stat .lbl{color:var(--muted);font-size:12.5px;margin-top:4px;line-height:1.5}
+  h2{font-size:16px;margin-bottom:10px}
+  table{width:100%;border-collapse:collapse;font-size:13.5px}
+  th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line)}
+  th{color:var(--muted);font-weight:600}
+  .muted{color:var(--muted)} .err{color:var(--red);font-size:14px;line-height:1.7}
+  input[type=password]{width:100%;background:#101016;border:1px solid var(--line);border-radius:12px;color:var(--text);
+    padding:13px 14px;font-size:16px;margin:10px 0}
+  button{background:var(--accent);color:#14100C;border:0;border-radius:12px;padding:13px 18px;font-size:15px;font-weight:800;width:100%}
+  .row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--line);font-size:13.5px}
+  .row:last-child{border-bottom:0}
+  .hidden{display:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header><span class="logo">NLO</span><h1>App Store — Admin Dashboard</h1></header>
+
+  <div id="gate" class="card">
+    <h2>🔒 Owner code ထည့်ပါ</h2>
+    <p class="muted" style="font-size:13.5px">ဒီ dashboard က ပိုင်ရှင် တစ်ယောက်တည်း အတွက်ပါ။</p>
+    <input type="password" id="code" placeholder="Owner code" autocomplete="off">
+    <button id="go">ဖွင့်မည်</button>
+    <p id="gateErr" class="err"></p>
+  </div>
+
+  <div id="main" class="hidden">
+    <div class="grid">
+      <div class="stat"><div class="num" id="dlTotal">–</div><div class="lbl">APK Download<br>စုစုပေါင်း</div></div>
+      <div class="stat"><div class="num" id="insTotal">–</div><div class="lbl">Install / ဖွင့်ထားတဲ့<br>ဖုန်း စုစုပေါင်း</div></div>
+      <div class="stat"><div class="num" id="ins7d">–</div><div class="lbl">နောက်ဆုံး ၇ ရက်အတွင်း<br>install အသစ်</div></div>
+    </div>
+    <p class="muted" style="font-size:12.5px;margin:10px 2px 16px">Install အရေအတွက်က app ကို ပထမဆုံး ဖွင့်တဲ့ ဖုန်းတွေကို ရေတွက်ထားတာပါ (internet ရှိမှ မှတ်မိမယ်)။ Download အရေအတွက်က GitHub က တိုက်ရိုက် count ပါ။</p>
+
+    <div class="card">
+      <h2>📱 ဖုန်း model အလိုက် install</h2>
+      <div id="devices"><p class="muted">ခဏစောင့်ပါ…</p></div>
+    </div>
+
+    <div class="card">
+      <h2>🕘 နောက်ဆုံး install များ</h2>
+      <div id="recent"><p class="muted">ခဏစောင့်ပါ…</p></div>
+    </div>
+
+    <div class="card">
+      <h2>⬇️ Release အလိုက် download</h2>
+      <div id="releases"><p class="muted">ခဏစောင့်ပါ…</p></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const SB_URL='https://rnqnhcpzhntolqftjpzk.supabase.co';
+const SB_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJucW5oY3B6aG50b2xxZnRqcHprIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ3MTg0MTMsImV4cCI6MjExMDI5NDQxM30.gFW98E43RUOvVruOgPGoYWteWdgREVF9Tg5I2VZtE0w';
+const GH_REPO='old-burma/nlo-app';
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmtDate=s=>{if(!s)return'–';const d=new Date(s);return d.toLocaleDateString('en-GB')+' '+d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});};
+
+async function loadStats(code){
+  const r=await fetch(SB_URL+'/rest/v1/rpc/app_install_stats',{method:'POST',
+    headers:{apikey:SB_ANON,Authorization:'Bearer '+SB_ANON,'Content-Type':'application/json'},
+    body:JSON.stringify({p_code:code})});
+  if(!r.ok) throw new Error('Stats server error: HTTP '+r.status);
+  const j=await r.json();
+  if(j && j.error) throw new Error('Owner code မှားနေပါတယ်');
+  return j;
+}
+async function loadDownloads(){
+  const r=await fetch('https://api.github.com/repos/'+GH_REPO+'/releases');
+  if(!r.ok) throw new Error('GitHub error: HTTP '+r.status);
+  return r.json();
+}
+async function open(code){
+  $('gateErr').textContent='';
+  let st;
+  try{ st=await loadStats(code); }
+  catch(e){ $('gateErr').textContent=e.message; return; }
+  sessionStorage.setItem('nlo_store_code',code);
+  $('gate').classList.add('hidden'); $('main').classList.remove('hidden');
+  $('insTotal').textContent=st.installs_total ?? 0;
+  $('ins7d').textContent=st.installs_7d ?? 0;
+  const dev=st.devices||[];
+  $('devices').innerHTML=dev.length? '<table><tr><th>Model</th><th>Android</th><th>အရေအတွက်</th><th>နောက်ဆုံး</th></tr>'+
+    dev.map(d=>'<tr><td>'+esc(d.device_model||'—')+'</td><td>'+esc(d.android||'—')+'</td><td>'+d.n+'</td><td class="muted">'+fmtDate(d.last_seen)+'</td></tr>').join('')+'</table>'
+    : '<p class="muted">ခုထိ install မှတ်တမ်း မရှိသေးပါ</p>';
+  const rec=st.recent||[];
+  $('recent').innerHTML=rec.length? rec.map(x=>'<div class="row"><span>'+esc(x.device_model||'—')+' · Android '+esc(x.android||'—')+' · v'+esc(x.app_ver||'—')+'</span><span class="muted">'+fmtDate(x.created_at)+'</span></div>').join('')
+    : '<p class="muted">ခုထိ install မှတ်တမ်း မရှိသေးပါ</p>';
+  try{
+    const rels=await loadDownloads();
+    let total=0, rows='';
+    for(const rel of rels){ for(const a of (rel.assets||[])){ total+=a.download_count||0;
+      rows+='<div class="row"><span>'+esc(rel.tag_name)+' · '+esc(a.name)+'</span><span>'+(a.download_count||0)+' ကြိမ်</span></div>'; } }
+    $('dlTotal').textContent=total;
+    $('releases').innerHTML=rows||'<p class="muted">Release မရှိသေးပါ</p>';
+  }catch(e){ $('releases').innerHTML='<p class="err">'+esc(e.message)+'</p>'; $('dlTotal').textContent='–'; }
+}
+$('go').addEventListener('click',()=>open($('code').value.trim()));
+$('code').addEventListener('keydown',e=>{if(e.key==='Enter')open($('code').value.trim());});
+const saved=sessionStorage.getItem('nlo_store_code');
+if(saved) open(saved);
+</script>
+</body>
+</html>
