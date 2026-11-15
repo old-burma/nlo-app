@@ -81,6 +81,16 @@
       </div>
       <div class="r-arrow">›</div>
     </a>
+
+    <a class="app-row" href="#recaps">
+      <img src="recaps-icon.png" alt="Recaps icon">
+      <div class="r-main">
+        <div class="r-name">Recaps</div>
+        <div class="r-desc">ဗီဒီယို အရှည်တွေကို အတိုလေးတွေ ပြန်ဖြတ်ပေးတဲ့ app — YouTube link ထည့်ရုံနဲ့ ဆွဲယူပြီး AI script၊ အသံ၊ စာတန်း အကုန် ဖုန်းထဲမှာပဲ လုပ်လို့ရတယ်။</div>
+        <div class="r-meta">Version 1.0 · 5.2 MB · Android 8.0+</div>
+      </div>
+      <div class="r-arrow">›</div>
+    </a>
   </div>
 
   <!-- ======= DETAIL: WorkDay Tracker ======= -->
@@ -129,16 +139,39 @@
     <p class="note">Download လုပ်ပြီး file ကို နှိပ် install လုပ်ပါ။<br>“Unknown apps install” ခွင့်ပြုချက် တောင်းလာရင် Allow / ခွင့်ပြုပါ နှိပ်ပေးပါ။</p>
   </div>
 
+  <!-- ======= DETAIL: Recaps ======= -->
+  <div class="detail" id="detail-recaps">
+    <button class="back-btn" data-back>‹ နောက်သို့</button>
+    <div class="d-head">
+      <img src="recaps-icon.png" alt="Recaps icon">
+      <div>
+        <div class="name">Recaps</div>
+        <div class="dev">NLO</div>
+        <div class="meta">Version 1.0 · 5.2 MB · Android 8.0 နှင့်အထက်</div>
+      </div>
+    </div>
+    <a class="dl" href="https://github.com/old-burma/nlo-app/releases/download/recaps-v1.0/Recaps.apk">⬇️ APK Download<small>Recaps.apk · 5.2 MB</small></a>
+    <p class="desc">ဗီဒီယို အရှည်တွေကို TikTok / Reels အတိုလေးတွေ ပြန်ဖြတ်ပေးတဲ့ app — YouTube link ထည့်ရုံနဲ့ video ကို app ထဲ တိုက်ရိုက် ဆွဲယူလို့ရတယ် (web version မှာ မရတဲ့ feature)။ AI script၊ အသံ၊ စာတန်း၊ export အကုန် ဖုန်းထဲမှာပဲ လုပ်လို့ရတယ်။ Internet connection လိုပါတယ်။</p>
+    <ul class="feats">
+      <li>YouTube link မှ video တိုက်ရိုက် ဆွဲယူ (app ထဲမှာပဲ ရတဲ့ feature)</li>
+      <li>AI script ၂ မျိုး — မူရင်း စကားအတိုင်း / scene အလိုက် recap အသစ်</li>
+      <li>အသံ (Edge / Gemini TTS) + စာတန်း အလိုအလျောက် — cue တွေ ကိုယ်တိုင် ပြင်လို့ရ</li>
+      <li>ကိုယ်ပိုင် Font တင်သုံးလို့ရ (စာတန်း / Title / Text သီးသန့်စီ)</li>
+      <li>Export 640–1440 (2K) ထိ — Standard / Multi-thread / Hardware engine ၃ မျိုး</li>
+    </ul>
+    <p class="note">Download လုပ်ပြီး file ကို နှိပ် install လုပ်ပါ။<br>“Unknown apps install” ခွင့်ပြုချက် တောင်းလာရင် Allow / ခွင့်ပြုပါ နှိပ်ပေးပါ။</p>
+  </div>
+
   <footer>© 2026 · by <b>NLO</b></footer>
 </div>
 <script>
   function showFromHash(){
     var h = (location.hash || "").replace("#", "");
     var list = document.getElementById("listView");
-    var wd = document.getElementById("detail-workday");
-    var ex = document.getElementById("detail-expense");
-    wd.classList.remove("open"); ex.classList.remove("open"); list.style.display = "";
-    if (h === "workday" || h === "expense") {
+    var ids = ["workday", "expense", "recaps"];
+    ids.forEach(function(id){ document.getElementById("detail-" + id).classList.remove("open"); });
+    list.style.display = "";
+    if (ids.indexOf(h) >= 0) {
       list.style.display = "none";
       document.getElementById("detail-" + h).classList.add("open");
     }
